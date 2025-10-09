@@ -1,13 +1,13 @@
 package ru.tbank.education.school.homework
 
-/**
- * Исключение, которое выбрасывается при попытке забронировать занятое место
- */
+import kotlin.IllegalArgumentException
+import kotlin.collections.all
+
+
+// Исключение, которое выбрасывается при попытке забронировать занятое место
 class SeatAlreadyBookedException(message: String) : Exception(message)
 
-/**
- * Исключение, которое выбрасывается при попытке забронировать место при отсутствии свободных мест
- */
+// Исключение, которое выбрасывается при попытке забронировать место при отсутствии свободных мест
 class NoAvailableSeatException(message: String) : Exception(message)
 
 data class BookedSeat(
@@ -15,43 +15,75 @@ data class BookedSeat(
     val seat: Int // номер места
 )
 
+
 class MovieBookingService(
     private val maxQuantityOfSeats: Int // Максимальное кол-во мест
 ) {
     init {
-        TODO("Выбрасывать IllegalArgumentException, максимальное кол-во мест отрицательное или равно нулю")
+        if (maxQuantityOfSeats <= 0) {
+            throw IllegalArgumentException("The max quantity of seats must be greater than zero")
+        }
     }
 
-    /**
-     * Бронирует указанное место для фильма.
-     *
-     * @param movieId идентификатор фильма
-     * @param seat номер места
-     * @throws IllegalArgumentException если номер места вне допустимого диапазона
-     * @throws NoAvailableSeatException если нет больше свободных мест
-     * @throws SeatAlreadyBookedException если место уже забронировано
-     */
+    val book = mutableListOf<BookedSeat>()
     fun bookSeat(movieId: String, seat: Int) {
-        TODO("Реализовать логику")
+        if (seat > maxQuantityOfSeats || seat < 1) {
+            throw IllegalArgumentException("The seat $seat is not available")
+        }
+        if (book.contains(BookedSeat(movieId, seat))) {
+            throw SeatAlreadyBookedException("The seat $seat is already booked")
+        }
+        var cnt : Int = 0
+        for (bookedSeat in book) {
+            if (bookedSeat.movieId == movieId) {
+                cnt++
+            }
+        }
+        if (cnt == maxQuantityOfSeats) {
+            throw NoAvailableSeatException("The seat $seat isn't available")
+        }
+        book.add(BookedSeat(movieId, seat))
     }
 
-    /**
-     * Отменяет бронь указанного места.
-     *
-     * @param movieId идентификатор фильма
-     * @param seat номер места
-     * @throws NoSuchElementException если место не было забронировано
-     */
     fun cancelBooking(movieId: String, seat: Int) {
-        TODO("Реализовать логику")
+        if (!book.contains(BookedSeat(movieId, seat))) {
+            throw SeatAlreadyBookedException("The seat $seat isn't available")
+        }
+        book.remove(BookedSeat(movieId, seat))
     }
 
-    /**
-     * Проверяет, забронировано ли место
-     *
-     * @return true если место занято, false иначе
-     */
     fun isSeatBooked(movieId: String, seat: Int): Boolean {
-        TODO("Реализовать логику")
+        return book.contains(BookedSeat(movieId, seat))
     }
+}
+
+
+
+fun main() {
+    val books = MovieBookingService(10)
+    try {
+        books.bookSeat("harry Potter", 8)
+        books.bookSeat("harry Potter chapter 2", 1)
+        books.bookSeat("harry Potter", 3)
+    } catch (e: IllegalArgumentException) {
+        println(e.message)
+    }
+    try {
+        books.bookSeat("harry Potter", 11)
+    } catch (e: IllegalArgumentException) {
+        println(e.message)
+    }
+
+    try {
+        books.cancelBooking("harry Potter", 2)
+    } catch (e: NoSuchElementException) {
+        println(e.message)
+    }
+    try {
+        books.cancelBooking("harry Potter", 3)
+    } catch (e: NoSuchElementException) {
+        println(e.message)
+    }
+
+    books.isSeatBooked("harry Potter chapter 2", 1)
 }
