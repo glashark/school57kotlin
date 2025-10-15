@@ -51,7 +51,7 @@ class HighRiskCategorySpendingRule(
         val part : Double = (gambsum + crypsum + transsum).toDouble() / sum.toDouble()
         val risk = when {
             part > 0.6 -> PaymentRisk.HIGH
-            part > 0.3 -> PaymentRisk.MEDIUM
+            part > 0.3 || sum == 0.toLong() -> PaymentRisk.MEDIUM
             else -> PaymentRisk.LOW
         }
 
