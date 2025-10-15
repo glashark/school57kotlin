@@ -1,7 +1,9 @@
 package ru.tbank.education.school.lesson6.creditriskanalyzer.rules
 
 import ru.tbank.education.school.lesson6.creditriskanalyzer.models.Client
+import ru.tbank.education.school.lesson6.creditriskanalyzer.models.PaymentRisk
 import ru.tbank.education.school.lesson6.creditriskanalyzer.models.ScoringResult
+import ru.tbank.education.school.lesson6.creditriskanalyzer.models.TransactionCategory
 import ru.tbank.education.school.lesson6.creditriskanalyzer.repositories.TransactionRepository
 
 /**
@@ -26,6 +28,23 @@ class IncomeExpenseRatioRule(
     override val ruleName: String = "Loan Count"
 
     override fun evaluate(client: Client): ScoringResult {
-        TODO()
+        val transactions = transactionRepo.getTransactions(client.id)
+        var revenue : Long = 0
+        var expense : Long = 0
+        for (transaction in transactions) {
+            if (transaction.category == TransactionCategory.SALARY) {
+                revenue += transaction.amount
+            } else {
+                expense += transaction.amount
+            }
+        }
+
+        val score = when {
+            revenue > expense -> PaymentRisk.HIGH
+            revenue > 0.8 * expense && revenue < 1.2 * expense -> PaymentRisk.MEDIUM
+            else -> PaymentRisk.LOW
+        }
+
+        return ScoringResult(ruleName, score)
     }
 }
