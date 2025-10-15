@@ -40,8 +40,8 @@ class IncomeExpenseRatioRule(
         }
 
         val score = when {
-            revenue > expense -> PaymentRisk.HIGH
-            revenue > 0.8 * expense && revenue < 1.2 * expense -> PaymentRisk.MEDIUM
+            expense > revenue -> PaymentRisk.HIGH
+            expense >= 0.8 * revenue -> PaymentRisk.MEDIUM
             else -> PaymentRisk.LOW
         }
 
