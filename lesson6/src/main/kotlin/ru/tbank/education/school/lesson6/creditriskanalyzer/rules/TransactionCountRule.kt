@@ -27,7 +27,7 @@ class TransactionCountRule(
 
         val score = when {
             transactions < 500 -> PaymentRisk.HIGH
-            transactions < 1000 -> PaymentRisk.MEDIUM
+            transactions <= 1000 -> PaymentRisk.MEDIUM
             else -> PaymentRisk.LOW
         }
         return ScoringResult(ruleName, score)

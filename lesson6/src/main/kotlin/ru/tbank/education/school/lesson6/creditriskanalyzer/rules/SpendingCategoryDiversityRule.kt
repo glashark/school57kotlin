@@ -4,6 +4,7 @@ import ru.tbank.education.school.lesson6.creditriskanalyzer.models.Client
 import ru.tbank.education.school.lesson6.creditriskanalyzer.models.PaymentRisk
 import ru.tbank.education.school.lesson6.creditriskanalyzer.models.ScoringResult
 import ru.tbank.education.school.lesson6.creditriskanalyzer.models.Transaction
+import ru.tbank.education.school.lesson6.creditriskanalyzer.models.TransactionCategory
 import ru.tbank.education.school.lesson6.creditriskanalyzer.repositories.TransactionRepository
 import java.time.LocalDateTime
 
@@ -29,10 +30,10 @@ class SpendingCategoryDiversityRule(
     override fun evaluate(client: Client): ScoringResult {
         val threeMonthsAgo = LocalDateTime.now().minusMonths(3)
         val transactions = transactionRepo.getTransactions(client.id).filter{ it.date.isAfter(threeMonthsAgo)}
-        val cnt = mutableSetOf<Transaction>()
+        val cnt = mutableSetOf<TransactionCategory>()
 
         for (transaction in transactions) {
-            cnt.add(transaction)
+            cnt.add(transaction.category)
         }
 
         val score = when {
