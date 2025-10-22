@@ -1,6 +1,7 @@
 package ru.tbank.education.school.lesson6.creditriskanalyzer.rules
 
 import ru.tbank.education.school.lesson6.creditriskanalyzer.models.Client
+import ru.tbank.education.school.lesson6.creditriskanalyzer.models.PaymentRisk
 import ru.tbank.education.school.lesson6.creditriskanalyzer.models.ScoringResult
 import ru.tbank.education.school.lesson6.creditriskanalyzer.repositories.TicketRepository
 
@@ -24,6 +25,15 @@ class UnresolvedTicketsRule(
     override val ruleName: String = "Unresolved Tickets"
 
     override fun evaluate(client: Client): ScoringResult {
-        TODO()
+        val tickets = ticketRepo.getTickets(client.id)
+        val ticketsUnresolved = ticketRepo.getTickets(client.id).count{ !it.resolved }
+        val part: Double = ticketsUnresolved.toDouble() / tickets.size
+
+        val risk = when {
+            part > 0.5 -> PaymentRisk.HIGH
+            part > 0.2 -> PaymentRisk.MEDIUM
+            else -> PaymentRisk.LOW
+        }
+        return ScoringResult(ruleName, risk)
     }
 }
