@@ -1,7 +1,6 @@
 package ru.tbank.education.school.lesson7.practise.task3
 
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 /**
  * Задание 4. Дата через infix
@@ -15,4 +14,4 @@ import java.time.LocalDateTime
  * ```
  */
 
-infix fun Int.daysFromNow(ignore: Unit): LocalDate = LocalDate.now().plusDays(this.toLong())
+infix fun Int.daysFromNow(@Suppress("UNUSED_PARAMETER")ignore: Unit): LocalDate = LocalDate.now().plusDays(this.toLong())
