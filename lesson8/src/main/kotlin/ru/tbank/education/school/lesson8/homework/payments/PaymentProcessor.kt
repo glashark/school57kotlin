@@ -149,7 +149,7 @@ class PaymentProcessor {
             return GatewayResult(false, "Transaction limit exceeded")
         }
 
-        if (cardNumber.startsWith("4444")) {
+        if (cardNumber.startsWith("4440")) {
             return GatewayResult(false, "Card blocked")
         }
 
