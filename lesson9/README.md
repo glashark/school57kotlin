@@ -4,49 +4,54 @@
 Найти все строки со словом ERROR во всех логах в каталоге logs (включая logs/old) и сохранить их в файл errors.txt в корне проекта.
 
 ```bash
-TODO()
+lena@ElenaPC:/mnt/c/Users/Elena/Documents/projects/school57kotlin3/lesson9$ grep -r "ERROR" logs/* > errors.txt
 ```
 
 ## Задание 2. Архивация старых логов
 Создать каталог archived/ в корне проекта и переместить туда все файлы из logs/old.
 
 ```bash
-TODO()
+lena@ElenaPC:/mnt/c/Users/Elena/Documents/projects/school57kotlin3/lesson9$ mkdir archived
+lena@ElenaPC:/mnt/c/Users/Elena/Documents/projects/school57kotlin3/lesson9$ mv logs/old/* archived
 ```
 
 ## Задание 3. Подсчёт размера логов
 Посчитать общий размер каталога logs и записать результат в logs_size.txt.
 
 ```bash
-TODO()
+lena@ElenaPC:/mnt/c/Users/Elena/Documents/projects/school57kotlin3/lesson9$ du -bs logs | cut -f1 > logs_size.txt
 ```
 
 ## Задание 4. Нахождение самого большого лог-файла
 Найти самый большой файл в каталоге logs (без учёта подкаталогов) и записать его имя в файл biglog.txt.
 
 ```bash
-TODO()
+lena@ElenaPC:/mnt/c/Users/Elena/Documents/projects/school57kotlin3/lesson9$ ls -l logs | tr -s ' ' | grep -v "^d" | cut -d ' ' -f5,9 | sort -n | tail -1 | cut -d ' ' -f2 > biglog.txt
 ```
 
 ## Задание 5. Подсчёт количества логов
 Подсчитать количество файлов с расширением .log во всём каталоге logs и сохранить результат в log_count.txt.
 
 ```bash
-TODO()
+lena@ElenaPC:/mnt/c/Users/Elena/Documents/projects/school57kotlin3/lesson9$ find logs/ -type f -name "*.log" | wc -l > log_count.txt
 ```
 
 ## Задание 6. Поиск конфигурационных параметров
 Найти во всех config/*.conf строки, содержащие слово "host", и записать в host_params.txt.
 
 ```bash
-TODO()
+lena@ElenaPC:/mnt/c/Users/Elena/Documents/projects/school57kotlin3/lesson9$ grep "host" config/*.conf > host_params.txt
 ```
 
 ## Задание 7. Создание резервного архива конфигов
 Создать zip-архив config_backup.zip, содержащий все файлы из config/.
 
 ```bash
-TODO()
+lena@ElenaPC:/mnt/c/Users/Elena/Documents/projects/school57kotlin3/lesson9$ zip -r config_backup.zip config/
+  adding: config/ (stored 0%)
+  adding: config/app.conf (deflated 2%)
+  adding: config/db.conf (stored 0%)
+
 ```
 
 ## Задание 8. Создание общего резервного архива
@@ -56,14 +61,18 @@ TODO()
 - файл errors.txt (если он есть)
 
 ```bash
-TODO()
+lena@ElenaPC:/mnt/c/Users/Elena/Documents/projects/school57kotlin3/lesson9$ zip -r project_backup.zip config/*.conf logs/*.log errors.txt
+        zip warning: name not matched: logs/*.log
+  adding: config/app.conf (deflated 2%)
+  adding: config/db.conf (stored 0%)
+  adding: errors.txt (deflated 41%)
 ```
 
 ## Задание 9. Очистка пустых строк в логах
-Создать файл cleaned_app.log, содержащий содержимое app.log без пустых строк.
+Создать файл cleaned_app.log, содержащий содержимое app.logs без пустых строк.
 
 ```bash
-TODO()
+lena@ElenaPC:/mnt/c/Users/Elena/Documents/projects/school57kotlin3/lesson9$ cat logs/app.logs  | grep -v "^$" > cleaned_app.log
 ```
 
 ## Задание 10. Подсчёт количества строк в каждом конфиге
@@ -73,7 +82,9 @@ db.conf 8
 (где число — количество строк в файле)
 
 ```bash
-TODO()
+lena@ElenaPC:/mnt/c/Users/Elena/Documents/projects/school57kotlin3/lesson9$ cd config/
+lena@ElenaPC:/mnt/c/Users/Elena/Documents/projects/school57kotlin3/lesson9/config$ wc --total=never -l * | awk '{print $2, $1}' > ../conf_stats.txt
+lena@ElenaPC:/mnt/c/Users/Elena/Documents/projects/school57kotlin3/lesson9/config$ cd ..
 ```
 
 
