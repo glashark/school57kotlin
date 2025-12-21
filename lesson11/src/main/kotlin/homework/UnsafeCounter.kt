@@ -6,19 +6,21 @@ import kotlinx.coroutines.sync.withLock
 import java.util.concurrent.atomic.AtomicInteger
 
 /**
- * 
+ *
  * Задание: Исправьте гонку данных в этом классе любым из известных вам способов
- * 
+ *
  * Проблема: Несколько корутин одновременно увеличивают счетчик `value`,
  * что приводит к потере некоторых инкрементов из-за race condition.
  */
 class UnsafeCounter {
 
     private var value = 0
+    private val mutex = Mutex()
 
     suspend fun increment() {
-        delay(1)
-        value++
+        mutex.withLock {
+            value++
+        }
     }
 
     fun getValue(): Int = value
