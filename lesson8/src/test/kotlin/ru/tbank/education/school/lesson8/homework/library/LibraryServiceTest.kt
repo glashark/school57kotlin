@@ -74,7 +74,7 @@ class LibraryServiceTest {
         library.addBook(book)
         library.borrowBook("978-0-441-17271-9", "Alice")
 
-        val fine = library.calculateOverdueFine("978-0-441-17271-9", daysOverdue = 7)
+        val fine = library.calculateOverdueFine(7,"978-0-441-17271-9")
         assertEquals(0, fine)
     }
 
@@ -86,7 +86,7 @@ class LibraryServiceTest {
         library.addBook(book)
         library.borrowBook("978-0-441-17271-9", "Alice")
 
-        val fine = library.calculateOverdueFine("978-0-441-17271-9", daysOverdue = 15)
+        val fine = library.calculateOverdueFine(15,"978-0-441-17271-9")
         assertEquals(300, fine)
     }
 
@@ -98,7 +98,7 @@ class LibraryServiceTest {
 
         library.addBook(book1)
         library.addBook(book2)
-        library.borrowBook("978-0-452-28423-4", "Ivan")
+        library.borrowBook("978-0-452-28423-4", "Ivan", 15)
 
         assertThrows(IllegalArgumentException::class.java) {
             library.borrowBook("978-0-441-17271-9", "Ivan")
