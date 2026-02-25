@@ -6,6 +6,7 @@ import ru.tbank.education.school.lesson6.creditriskanalyzer.models.ScoringResult
 import ru.tbank.education.school.lesson6.creditriskanalyzer.repositories.TransactionRepository
 import java.time.LocalDateTime
 
+
 /**
  * Анализирует частоту крупных транзакций клиента за последние 3 месяца.
  *
