@@ -32,5 +32,6 @@ fun main() {
         if (email == null) null else Client(name, email, phone)
     }
 
+    @Suppress("UNUSED_VARIABLE")
     val cleanClients = rawClients.mapNotNull(normalizeClient)
 }
